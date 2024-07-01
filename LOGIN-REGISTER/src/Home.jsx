@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Home = () => {
   const [signedIn, setSignedIn] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    // Update current time every second
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
-    // Check if the user has already signed in today
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found");
@@ -20,7 +19,7 @@ const Home = () => {
     }
 
     axios
-      .get("http://localhost:3001/api/attendance/today", {
+      .get("http://localhost:3001/attendance/today", {
         headers: {
           Authorization: token,
         },
@@ -42,7 +41,7 @@ const Home = () => {
 
     axios
       .post(
-        "http://localhost:3001/api/attendance/signin",
+        "http://localhost:3001/attendance/signin",
         {},
         {
           headers: {
@@ -67,7 +66,7 @@ const Home = () => {
 
     axios
       .post(
-        "http://localhost:3001/api/attendance/signout",
+        "http://localhost:3001/attendance/signout",
         {},
         {
           headers: {
@@ -84,17 +83,21 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Welcome</h1>
-      <p>Current Date and Time: {currentTime.toLocaleString()}</p>
-      {signedIn ? (
-        <button onClick={handleSignOut}>Sign Out</button>
-      ) : (
-        <button onClick={handleSignIn}>Sign In</button>
-      )}
-      <button onClick={() => (window.location.href = "/report")}>
-        View Report
-      </button>
+    <div className="container mt-5">
+      <div className="card">
+        <div className="card-body text-center">
+          <h1 className="card-title">Welcome</h1>
+          <p className="card-text">Current Date and Time: {currentTime.toLocaleString()}</p>
+          {signedIn ? (
+            <button className="btn btn-danger" onClick={handleSignOut}>Sign Out</button>
+          ) : (
+            <button className="btn btn-success" onClick={handleSignIn}>Sign In</button>
+          )}
+          <button className="btn btn-primary ml-3" onClick={() => (window.location.href = "/report")}>
+            View Report
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

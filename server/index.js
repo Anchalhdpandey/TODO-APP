@@ -2,13 +2,16 @@ const express = require("express");
 // const monogoose = require("mongoose");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const attendanceRoutes = require('./routes/attendance');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const EmployeeModel = require("./models/Employee");
 
+
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use('/attendance', attendanceRoutes);
 const JWT_SECRET = "MYSECRET";
 
 mongoose.connect(
